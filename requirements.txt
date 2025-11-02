@@ -1,0 +1,10 @@
+# Core
+python-dotenv>=1.1.0
+
+# Testes
+pytest>=8.4.0
+pytest-cov>=6.2.1
+pytest-asyncio>=0.23.0
+
+# Lint & Format
+ruff>=0.5.0
