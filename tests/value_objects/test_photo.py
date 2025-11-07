@@ -1,6 +1,6 @@
 import pytest
 
-from domain.value_objects import Photo
+from core.domain.value_objects import Photo
 
 
 def test_should_create_a_valid_photo():

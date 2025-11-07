@@ -1,5 +1,5 @@
-from domain.entities import User
-from domain.value_objects import Email, Name, Password
+from core.domain.entities import User
+from core.domain.value_objects import Email, Name, Password
 
 
 def test_should_create_a_valid_user():

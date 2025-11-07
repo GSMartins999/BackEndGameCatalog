@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from domain.entities import Loan
+from core.domain.entities import Loan
 
 
 def test_should_create_a_valid_loan():

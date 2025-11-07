@@ -1,5 +1,5 @@
-from domain.entities import VinylRecord
-from domain.value_objects import Name, Photo
+from core.domain.entities import VinylRecord
+from core.domain.value_objects import Name, Photo
 
 
 def test_should_create_a_valid_vinyl_record():

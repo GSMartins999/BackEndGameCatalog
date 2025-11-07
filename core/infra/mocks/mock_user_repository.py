@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from domain.entities import User
-from domain.repositories import IUserRepository
+from core.domain.entities import User
+from core.domain.repositories import IUserRepository
 
 
 class MockUserRepository(IUserRepository):

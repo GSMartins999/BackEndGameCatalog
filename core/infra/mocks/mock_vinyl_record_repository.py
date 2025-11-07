@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from domain.entities import VinylRecord
-from domain.repositories import IVinylRecordRepository
+from core.domain.entities import VinylRecord
+from core.domain.repositories import IVinylRecordRepository
 
 
 class MockVinylRecordRepository(IVinylRecordRepository):

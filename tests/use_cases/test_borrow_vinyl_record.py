@@ -1,11 +1,11 @@
 import pytest
 
-from domain.use_cases.borrow_vinyl_record import BorrowVinylRecord
-from domain.use_cases.register_user import RegisterUser
-from domain.use_cases.register_vinyl_record import RegisterVinylRecord
-from tests.mocks.mock_loan_repository import MockLoanRepository
-from tests.mocks.mock_user_repository import MockUserRepository
-from tests.mocks.mock_vinyl_record_repository import MockVinylRecordRepository
+from core.domain.use_cases.borrow_vinyl_record import BorrowVinylRecord
+from core.domain.use_cases.register_user import RegisterUser
+from core.domain.use_cases.register_vinyl_record import RegisterVinylRecord
+from core.infra.mocks.mock_loan_repository import MockLoanRepository
+from core.infra.mocks.mock_user_repository import MockUserRepository
+from core.infra.mocks.mock_vinyl_record_repository import MockVinylRecordRepository
 
 
 @pytest.mark.asyncio

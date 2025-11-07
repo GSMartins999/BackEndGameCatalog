@@ -1,7 +1,7 @@
 import pytest
 
-from domain.use_cases.register_user import RegisterUser
-from tests.mocks.mock_user_repository import MockUserRepository
+from core.domain.use_cases.register_user import RegisterUser
+from core.infra.mocks.mock_user_repository import MockUserRepository
 
 
 @pytest.mark.asyncio

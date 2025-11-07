@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from domain.entities import Loan
-from domain.repositories import ILoanRepository
+from core.domain.entities import Loan
+from core.domain.repositories import ILoanRepository
 
 
 class MockLoanRepository(ILoanRepository):

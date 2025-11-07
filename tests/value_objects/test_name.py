@@ -1,6 +1,6 @@
 import pytest
 
-from domain.value_objects import Name
+from core.domain.value_objects import Name
 
 
 def test_should_create_a_valid_name():

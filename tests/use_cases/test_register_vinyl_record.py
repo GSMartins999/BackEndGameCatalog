@@ -1,7 +1,7 @@
 import pytest
 
-from domain.use_cases.register_vinyl_record import RegisterVinylRecord
-from tests.mocks.mock_vinyl_record_repository import MockVinylRecordRepository
+from core.domain.use_cases.register_vinyl_record import RegisterVinylRecord
+from core.infra.mocks.mock_vinyl_record_repository import MockVinylRecordRepository
 
 
 @pytest.mark.asyncio

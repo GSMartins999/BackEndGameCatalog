@@ -1,6 +1,6 @@
 import pytest
 
-from domain.value_objects import Email
+from core.domain.value_objects import Email
 
 
 def test_should_create_a_valid_email():
