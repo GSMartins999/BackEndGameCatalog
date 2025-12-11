@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class LoanCreate(BaseModel):
@@ -15,5 +15,4 @@ class LoanResponse(BaseModel):
     loan_date: datetime
     return_date: datetime | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
