@@ -85,3 +85,9 @@ async def test_delete_vinyl(client: AsyncClient, auth_headers):
         f"/api/vinyl-records/{record_id}", headers=auth_headers
     )
     assert response.status_code == 204
+
+
+@pytest.mark.asyncio
+async def test_delete_erro_vinyl(client: AsyncClient, auth_headers):
+    response = await client.delete("/api/vinyl-records/1", headers=auth_headers)
+    assert response.status_code == 400

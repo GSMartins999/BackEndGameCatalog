@@ -76,6 +76,8 @@ async def delete_vinyl_record(
     try:
         find_vinyl_use_case = factory.create_find_vinyl_record()
         record = await find_vinyl_use_case.execute(id=vinyl_id)
+        if record == None:
+            raise HTTPException(status_code=400, detail="Não encontrado!!!")
         if record.user_id != current_user.id:
             raise HTTPException(status_code=403, detail="Não autorizado!!!")
         delete_vinyl_use_case = factory.create_delete_vinyl_record()
