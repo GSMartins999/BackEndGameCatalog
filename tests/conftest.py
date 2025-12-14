@@ -1,41 +1,55 @@
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from api.database import get_db
 from core.infra.orm.base import Base
 from api.main import app
 
-# Use in-memory SQLite for tests with StaticPool to share connection
+# URL do banco de testes
 SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
-engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
-)
+# 1. FIXTURE DA ENGINE (Scope = Session)
+# Cria a engine uma vez para todos os testes e garante o fechamento no final via dispose()
+@pytest_asyncio.fixture(scope="session")
+async def db_engine():
+    engine = create_async_engine(
+        SQLALCHEMY_DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    
+    yield engine
+    
+    # ESTA É A LINHA MÁGICA QUE EVITA O TRAVAMENTO NO GITHUB ACTIONS
+    await engine.dispose()
 
-TestingSessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
-)
-
-
+# 2. FIXTURE DA SESSÃO (Scope = Function)
+# Cria as tabelas antes de cada teste e apaga depois
 @pytest_asyncio.fixture(scope="function")
-async def db_session():
-    # Create tables
-    async with engine.begin() as conn:
+async def db_session(db_engine):
+    # Cria as tabelas no banco em memória
+    async with db_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    async with TestingSessionLocal() as session:
+    # Cria a fábrica de sessões usando a engine da fixture
+    SessionLocal = async_sessionmaker(
+        bind=db_engine,
+        class_=AsyncSession,
+        expire_on_commit=False,
+        autoflush=False,
+        autocommit=False
+    )
+
+    async with SessionLocal() as session:
         yield session
 
-    # Drop tables (cleanup)
-    async with engine.begin() as conn:
+    # Limpa as tabelas após o teste
+    async with db_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 
-
+# 3. FIXTURE DO CLIENT
 @pytest_asyncio.fixture(scope="function")
 async def client(db_session):
     async def override_get_db():
@@ -43,31 +57,29 @@ async def client(db_session):
 
     app.dependency_overrides[get_db] = override_get_db
 
-    # Use ASGITransport for direct app testing without running a server
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
 
     app.dependency_overrides.clear()
 
-
+# 4. FIXTURE DE TOKEN (Usuário Helper)
 @pytest_asyncio.fixture(scope="function")
 async def token(client):
-    # Register a user to get a token
     user_data = {
         "name": "Test User",
         "email": "test@example.com",
         "password": "Password123!",
     }
+    # Cria usuário
     await client.post("/api/users", json=user_data)
 
-    # Login
+    # Faz login
     response = await client.post(
         "/api/token",
         data={"username": user_data["email"], "password": user_data["password"]},
     )
     return response.json()["access_token"]
-
 
 @pytest_asyncio.fixture(scope="function")
 async def auth_headers(token):
