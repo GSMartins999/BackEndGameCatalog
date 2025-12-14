@@ -26,7 +26,7 @@ jobs:
         working-directory: ./
         env: 
           DATABASE_URL: "sqlite+aiosqlite:///:memory:"
-        run: make test-cov
+        run: make test
 
       - name: Verifica se o código está formatado
         working-directory: ./
