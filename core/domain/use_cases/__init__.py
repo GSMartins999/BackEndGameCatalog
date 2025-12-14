@@ -2,6 +2,7 @@ from .borrow_vinyl_record import BorrowVinylRecord
 from .delete_user import DeleteUser
 from .delete_vinyl_record import DeleteVinylRecord
 from .find_all_vinyl_record import FindAllVinylRecord
+from .find_loan import FindLoan
 from .find_user import FindUser
 from .find_user_by_email import FindUserByEmail
 from .find_vinyl_record import FindVinylRecord
@@ -11,4 +12,3 @@ from .register_vinyl_record import RegisterVinylRecord
 from .return_vinyl_record import ReturnVinylRecord
 from .update_user import UpdateUser
 from .update_vinyl_record import UpdateVinylRecord
-from .find_loan import FindLoan

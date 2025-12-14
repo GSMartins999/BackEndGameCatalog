@@ -1,5 +1,6 @@
-from pydantic import BaseModel, model_validator, ConfigDict
 from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, model_validator
 
 
 class VinylRecordCreate(BaseModel):

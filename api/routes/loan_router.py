@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from ..schemas import LoanCreate, LoanResponse
-from core.factories.use_case_factory import UseCaseFactory
-from ..dependencies import get_use_case_factory, get_current_user
+
 from core.domain.entities import User
+from core.factories.use_case_factory import UseCaseFactory
+
+from ..dependencies import get_current_user, get_use_case_factory
+from ..schemas import LoanCreate, LoanResponse
 
 loan_router = APIRouter()
 

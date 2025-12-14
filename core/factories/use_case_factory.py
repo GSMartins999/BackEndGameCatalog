@@ -10,6 +10,7 @@ from core.domain.use_cases import (
     DeleteUser,
     DeleteVinylRecord,
     FindAllVinylRecord,
+    FindLoan,
     FindUser,
     FindUserByEmail,
     FindVinylRecord,
@@ -19,7 +20,6 @@ from core.domain.use_cases import (
     ReturnVinylRecord,
     UpdateUser,
     UpdateVinylRecord,
-    FindLoan,
 )
 from core.infra.mocks import (
     MockLoanRepository,

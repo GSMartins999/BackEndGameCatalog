@@ -1,13 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException
 from typing import List
-from api.dependencies import get_use_case_factory, get_current_user
+
+from fastapi import APIRouter, Depends, HTTPException
+
+from api.dependencies import get_current_user, get_use_case_factory
 from api.schemas.vinyl_record_schemas import (
     VinylRecordCreate,
     VinylRecordResponse,
     VinylRecordUpdate,
 )
+from core.domain.entities import User
 from core.factories.use_case_factory import UseCaseFactory
-from core.domain.entities import VinylRecord, User
 
 vinyl_router = APIRouter()
 
@@ -76,7 +78,7 @@ async def delete_vinyl_record(
     try:
         find_vinyl_use_case = factory.create_find_vinyl_record()
         record = await find_vinyl_use_case.execute(id=vinyl_id)
-        if record == None:
+        if record is None:
             raise HTTPException(status_code=400, detail="Não encontrado!!!")
         if record.user_id != current_user.id:
             raise HTTPException(status_code=403, detail="Não autorizado!!!")

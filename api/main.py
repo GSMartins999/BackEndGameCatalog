@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from api.routes import auth_router, user_router, vinyl_router, loan_router
+from api.routes import auth_router, loan_router, user_router, vinyl_router
 
 app = FastAPI(
     title="Empréstimos de Vinis",
