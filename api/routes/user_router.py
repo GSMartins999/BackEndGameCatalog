@@ -31,3 +31,15 @@ async def read_user_me(current_user: User = Depends(get_current_user)):
     return UserResponse(
         id=current_user.id, name=current_user.name.value, email=current_user.email.value
     )
+
+
+@user_router.get("/users/{email}", response_model=UserResponse)
+async def read_user_by_email(
+    email: str, factory: UseCaseFactory = Depends(get_use_case_factory)
+):
+    find_user_use_case = factory.create_find_user_by_email()
+    user = await find_user_use_case.execute(email=email)
+    if user:
+        return UserResponse(id=user.id, name=user.name.value, email=user.email.value)
+    else:
+        raise HTTPException(status_code=400, detail=str("User not found!"))
