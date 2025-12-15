@@ -10,7 +10,8 @@ app = FastAPI(
 )
 
 origins = [
-    "http://http://localhost:3000",  # Vite local
+    "http://localhost:3000",  # Next local
+    "http://127.0.0.1:3000",  # Next local
     "https://frontweb20252.vercel.app",  # Produção
 ]
 
