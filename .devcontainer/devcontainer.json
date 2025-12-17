@@ -1,5 +1,5 @@
 {
-  "name": "Coreback20252 Dev Container",
+  "name": "Dev Container",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/home/devuser/app",
