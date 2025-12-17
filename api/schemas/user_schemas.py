@@ -1,20 +1,24 @@
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 
 
 class UserCreate(BaseModel):
-    name: str
     email: EmailStr
     password: str
 
 
 class UserUpdate(BaseModel):
-    name: str
     email: EmailStr
 
 
 class UserResponse(BaseModel):
     id: str
-    name: str
     email: EmailStr
 
     model_config = ConfigDict(from_attributes=True)
+
+    @classmethod
+    def from_entity(cls, user):
+        return cls(
+            id=user.id,
+            email=user.email.value
+        )

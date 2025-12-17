@@ -10,9 +10,6 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-# Importe sua Base aqui para o autogenerate funcionar
-from core.infra.orm.base import Base
-
 # ----------------------------------------------------------------------
 # 1. CARREGAMENTO DE VARIÁVEIS DE AMBIENTE
 # ----------------------------------------------------------------------
@@ -26,8 +23,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     print("\n[ERRO CRÍTICO] A variável DATABASE_URL não foi encontrada.")
     print(
-        "Verifique se o arquivo .env existe ou se as variáveis do Docker "
-        "estão corretas.\n"
+        "Verifique se o arquivo .env existe ou se as variáveis do Docker estão corretas.\n"
     )
     sys.exit(1)
 
@@ -41,6 +37,8 @@ if config.config_file_name is not None:
 # ----------------------------------------------------------------------
 # 2. IMPORTAÇÃO DOS MODELOS (METADATA)
 # ----------------------------------------------------------------------
+# Importe sua Base aqui para o autogenerate funcionar
+from core.infra.orm.base import Base
 
 target_metadata = Base.metadata
 

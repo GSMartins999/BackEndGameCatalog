@@ -1,16 +1,14 @@
-import dataclasses
 import re
 
 
-@dataclasses.dataclass(frozen=True)
 class Email:
-    value: str
-
-    def __post_init__(self):
-        if not self.validate(self.value):
+    def __init__(self, value: str):
+        if not self._validate(value):
             raise ValueError("E-mail inválido")
 
+        self.value = value
+
     @staticmethod
-    def validate(email: str) -> bool:
-        email_regex = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-        return bool(email_regex.match(email))
+    def _validate(email: str) -> bool:
+        email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        return re.match(email_regex, email) is not None

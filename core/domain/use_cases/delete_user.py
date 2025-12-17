@@ -1,14 +1,13 @@
-from ..repositories import IUserRepository
+from ..repositories.i_user_repository import IUserRepository
 
 
 class DeleteUser:
     def __init__(self, user_repository: IUserRepository):
         self.user_repository = user_repository
 
-    async def execute(self, id: str) -> None:
-        user = await self.user_repository.find_by_id(id)
-
+    def execute(self, *, id: str) -> None:
+        user = self.user_repository.find_by_id(id)
         if not user:
-            raise ValueError("User not found")
+            return
 
-        await self.user_repository.delete(id)
+        self.user_repository.delete(id)

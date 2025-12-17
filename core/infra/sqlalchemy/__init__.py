@@ -1,3 +1,2 @@
-from .loan_repository import LoanRepository
+from .jogo_repository import JogoRepository
 from .user_repository import UserRepository
-from .vinyl_record_repository import VinylRecordRepository

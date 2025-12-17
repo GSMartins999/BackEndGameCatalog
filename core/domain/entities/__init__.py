@@ -1,3 +1,2 @@
-from .loan import Loan
+from .jogo import Jogo
 from .user import User
-from .vinyl_record import VinylRecord

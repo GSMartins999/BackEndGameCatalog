@@ -1,16 +1,13 @@
-import dataclasses
 import re
 
 
-@dataclasses.dataclass(frozen=True)
 class Password:
-    value: str
-
-    def __post_init__(self):
-        self.validate(self.value)
+    def __init__(self, value: str):
+        self._validate(value)
+        self.value = value
 
     @staticmethod
-    def validate(password: str) -> bool:
+    def _validate(password: str) -> None:
         if len(password) < 8:
             raise ValueError("A senha deve ter pelo menos 8 caracteres")
         if not re.search(r"[A-Z]", password):
@@ -20,5 +17,6 @@ class Password:
         if not re.search(r"[0-9]", password):
             raise ValueError("A senha deve ter pelo menos um número")
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
-            raise ValueError("A senha deve conter pelo menos um caractere especial")
-        return True
+            raise ValueError(
+                "A senha deve conter pelo menos um caractere especial"
+            )
