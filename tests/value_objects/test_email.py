@@ -1,5 +1,4 @@
 import pytest
-
 from core.domain.value_objects import Email
 
 

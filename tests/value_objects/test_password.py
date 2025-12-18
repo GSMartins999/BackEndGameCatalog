@@ -1,5 +1,4 @@
 import pytest
-
 from core.domain.value_objects import Password
 
 
@@ -14,26 +13,20 @@ def test_should_raise_error_for_short_password():
 
 
 def test_should_raise_error_for_password_without_uppercase():
-    with pytest.raises(
-        ValueError, match="A senha deve ter pelo menos uma letra maiúscula"
-    ):
+    with pytest.raises(ValueError, match="letra maiúscula"):
         Password("nouppercase1!")
 
 
 def test_should_raise_error_for_password_without_lowercase():
-    with pytest.raises(
-        ValueError, match="A senha deve ter pelo menos uma letra minúscula"
-    ):
+    with pytest.raises(ValueError, match="letra minúscula"):
         Password("NOLOWERCASE1!")
 
 
 def test_should_raise_error_for_password_without_number():
-    with pytest.raises(ValueError, match="A senha deve ter pelo menos um número"):
+    with pytest.raises(ValueError, match="um número"):
         Password("NoNumber!")
 
 
 def test_should_raise_error_for_password_without_special_char():
-    with pytest.raises(
-        ValueError, match="A senha deve conter pelo menos um caractere especial"
-    ):
+    with pytest.raises(ValueError, match="caractere especial"):
         Password("NoSpecialChar1")

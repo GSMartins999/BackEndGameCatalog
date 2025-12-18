@@ -6,10 +6,10 @@ from core.domain.repositories import (
 )
 from core.domain.use_cases import (
     RegisterJogo,
-    UpdateJogo,
-    DeleteJogo,
-    FindJogo,
-    FindAllJogos,
+    EditJogo,
+    RemoveJogo,
+    ListJogos,
+    DeleteUser,
     RegisterUser,
     LoginUser,
     FindUserByEmail,
@@ -33,17 +33,14 @@ class UseCaseFactory:
     def create_register_jogo(self) -> RegisterJogo:
         return RegisterJogo(jogo_repository=self.jogo_repository)
 
-    def create_find_jogo(self) -> FindJogo:
-        return FindJogo(jogo_repository=self.jogo_repository)
+    def create_find_jogo(self) -> ListJogos:
+        return ListJogos(jogo_repository=self.jogo_repository)
 
-    def create_find_all_jogos(self) -> FindAllJogos:
-        return FindAllJogos(jogo_repository=self.jogo_repository)
+    def create_update_jogo(self) -> EditJogo:
+        return EditJogo(jogo_repository=self.jogo_repository)
 
-    def create_update_jogo(self) -> UpdateJogo:
-        return UpdateJogo(jogo_repository=self.jogo_repository)
-
-    def create_delete_jogo(self) -> DeleteJogo:
-        return DeleteJogo(jogo_repository=self.jogo_repository)
+    def create_delete_jogo(self) -> RemoveJogo:
+        return RemoveJogo(jogo_repository=self.jogo_repository)
 
     # User
     def create_register_user(self) -> RegisterUser:

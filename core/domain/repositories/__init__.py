@@ -1,2 +1,2 @@
-from .i_jogo_repository import JogoRepository
-from .i_user_repository import UserRepository
+from .i_jogo_repository import IJogoRepository
+from .i_user_repository import IUserRepository

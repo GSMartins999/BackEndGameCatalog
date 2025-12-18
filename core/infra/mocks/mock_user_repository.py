@@ -1,8 +1,9 @@
+from __future__ import annotations
 from typing import List, Optional
 
-from domain.entities.user import User
-from domain.repositories.i_user_repository import IUserRepository
-from domain.value_objects import Email, Password
+from core.domain.entities.user import User
+from core.domain.repositories.i_user_repository import IUserRepository
+from core.domain.value_objects import Email, Password
 
 
 class MockUserRepository(IUserRepository):

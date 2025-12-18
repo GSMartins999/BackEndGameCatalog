@@ -1,6 +1,6 @@
 import pytest
 
-from core.domain.use_cases.find_user_by_email import FindUserByEmail
+from core.domain.use_cases.find_byemail import FindUserByEmail
 from core.domain.use_cases.register_user import RegisterUser
 from core.infra.mocks.mock_user_repository import MockUserRepository
 
