@@ -65,5 +65,8 @@ async def delete_jogo(
     jogo_id: int,
     factory: UseCaseFactory = Depends(get_use_case_factory),
 ):
-    delete_jogo = factory.create_delete_jogo()
-    await delete_jogo.execute(id_jogo=jogo_id)
+    try:
+        delete_jogo = factory.create_delete_jogo()
+        await delete_jogo.execute(id_jogo=jogo_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))

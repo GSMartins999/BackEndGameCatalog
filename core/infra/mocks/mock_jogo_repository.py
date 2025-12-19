@@ -1,30 +1,35 @@
-from core.domain.repositories.i_jogo_repository import IJogoRepository
-from core.domain.entities.jogo import Jogo
 from typing import List, Optional
+from core.domain.entities.jogo import Jogo
 
-
-class MockJogoRepository(IJogoRepository):
-
+class MockJogoRepository:
     def __init__(self):
-        self._jogos: List[Jogo] = []
+        self.jogos: List[Jogo] = []
 
-    def save(self, jogo: Jogo) -> None:
-        self._jogos.append(jogo)
+    async def save(self, jogo: Jogo) -> Jogo:
+        self.jogos.append(jogo)
+        return jogo
 
-    def find_by_id(self, id_jogo: int) -> Optional[Jogo]:
-        return next((j for j in self._jogos if j.id_jogo == id_jogo), None)
+    async def find_by_id(self, id_jogo: int) -> Optional[Jogo]:
+        for jogo in self.jogos:
+            if jogo.id_jogo == id_jogo:
+                return jogo
+        return None
 
-    def find_all(self) -> List[Jogo]:
-        return self._jogos
+    async def delete(self, id_jogo: int):
+        jogo = await self.find_by_id(id_jogo)
+        if not jogo:
+            raise ValueError("Jogo not found")
+        self.jogos.remove(jogo)
 
-    def update(self, jogo: Jogo) -> None:
-        for index, jogo_atual in enumerate(self._jogos):
-            if jogo_atual.id_jogo == jogo.id_jogo:
-                self._jogos[index] = jogo
-                return
+    async def update(self, jogo: Jogo) -> Jogo:
+        for index, j in enumerate(self.jogos):
+            if j.id_jogo == jogo.id_jogo:
+                self.jogos[index] = jogo
+                return jogo
+        raise ValueError("Jogo not found")
 
-    def delete(self, id_jogo: int) -> None:
-        self._jogos = [
-            jogo for jogo in self._jogos
-            if jogo.id_jogo != id_jogo
-        ]
+    async def find_all(self) -> List[Jogo]:
+        return self.jogos
+
+    async def list_all(self) -> List[Jogo]:
+        return self.jogos

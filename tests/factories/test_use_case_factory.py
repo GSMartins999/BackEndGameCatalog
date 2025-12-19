@@ -25,5 +25,4 @@ def test_should_create_use_case_with_external_mocks():
 
     use_case = factory.create_register_jogo()
 
-    assert use_case.user_repository is user_repo
     assert use_case.jogo_repository is jogo_repo

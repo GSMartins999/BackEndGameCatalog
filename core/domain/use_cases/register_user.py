@@ -1,5 +1,6 @@
 # domain/use_cases/register_user.py
 import uuid
+from typing import Optional
 
 from ..entities.user import User
 from ..repositories.i_user_repository import IUserRepository
@@ -10,9 +11,10 @@ class RegisterUser:
     def __init__(self, user_repository: IUserRepository):
         self.user_repository = user_repository
 
-    def execute(self, *, email: str, password: str) -> User:
-        if self.user_repository.find_by_email(email):
-            raise ValueError("Usuário já existe.")
+    async def execute(self, email: str, password: str, name: Optional[str] = None) -> User:
+        user = await self.user_repository.find_by_email(email)
+        if user:
+            raise ValueError("User already exists")
 
         hashed_password = self._hash_password(password)
 
@@ -22,7 +24,7 @@ class RegisterUser:
             password=Password(hashed_password),
         )
 
-        self.user_repository.save(user)
+        await self.user_repository.save(user)
 
         return user
 

@@ -1,12 +1,6 @@
 import dataclasses
 
-from ..value_objects import (
-    NomeDoJogo,
-    Descricao,
-    URL,
-    DataLancamento
-)
-
+from ..value_objects import DataLancamento, Descricao, NomeDoJogo, URL
 
 @dataclasses.dataclass
 class Jogo:

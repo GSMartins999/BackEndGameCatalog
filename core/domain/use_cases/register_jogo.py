@@ -1,26 +1,20 @@
+from datetime import date
 from core.domain.entities.jogo import Jogo
-from core.domain.repositories.i_jogo_repository import IJogoRepository
-from core.domain.value_objects import (
-    NomeDoJogo,
-    Descricao,
-    URL,
-    DataLancamento
-)
-import random
-
+from core.domain.value_objects import NomeDoJogo, Descricao, URL, DataLancamento
 
 class RegisterJogo:
-    def __init__(self, jogo_repository: IJogoRepository):
+    def __init__(self, jogo_repository):
         self.jogo_repository = jogo_repository
+        self._id_counter = 1  # gerar id incremental
 
-    def execute(self, *, nome: str, descricao: str, url: str, data_lancamento):
-        jogo = Jogo.create(
-            id_jogo=random.randint(1, 100000),
-            nome=NomeDoJogo.create(nome),
-            descricao=Descricao.create(descricao),
-            url=URL.create(url),
-            data_lancamento=DataLancamento.create(data_lancamento),
+    async def execute(self, *, nome: str, descricao: str, url: str, data_lancamento: date):
+        jogo = Jogo(
+            id_jogo=self._id_counter,
+            nome_do_jogo=NomeDoJogo(nome),
+            descricao=Descricao(descricao),
+            url=URL(url),
+            data_lancamento=DataLancamento(data_lancamento)
         )
-
-        self.jogo_repository.save(jogo)
+        self._id_counter += 1
+        await self.jogo_repository.save(jogo)
         return jogo

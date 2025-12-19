@@ -11,10 +11,10 @@ async def test_should_login_a_user():
     register_user = RegisterUser(user_repository)
     login_user = LoginUser(user_repository)
 
-    await register_user.execute("Test User", "test@example.com", "ValidPass1!")
+    await register_user.execute(email="test@example.com", password="ValidPass1!")
     user = await login_user.execute("test@example.com", "ValidPass1!")
 
-    assert user.name.value == "Test User"
+    assert user.email.value == "test@example.com"
 
 
 @pytest.mark.asyncio
@@ -32,7 +32,7 @@ async def test_should_not_login_with_invalid_password():
     register_user = RegisterUser(user_repository)
     login_user = LoginUser(user_repository)
 
-    await register_user.execute("Test User", "test@example.com", "ValidPass1!")
+    await register_user.execute(email="test@example.com", password="ValidPass1!", name="Test User")
 
     with pytest.raises(ValueError, match="Invalid credentials"):
         await login_user.execute("test@example.com", "wrong_password")

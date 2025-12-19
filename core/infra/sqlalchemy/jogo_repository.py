@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -18,12 +19,19 @@ class JogoRepository(IJogoRepository):
         self.session = session
 
     async def save(self, jogo: JogoEntity) -> None:
+        # Convert ISO string to date object for SQLite
+        data_lancamento_value = jogo.data_lancamento.value
+        if isinstance(data_lancamento_value, str):
+            data_lancamento_date = datetime.fromisoformat(data_lancamento_value).date()
+        else:
+            data_lancamento_date = data_lancamento_value
+            
         jogo_model = JogoModel(
             id_jogo=jogo.id_jogo,
-            nome=jogo.nome.value,
+            nome=jogo.nome_do_jogo.value,
             descricao=jogo.descricao.value,
             url=jogo.url.value,
-            data_lancamento=jogo.data_lancamento.value,
+            data_lancamento=data_lancamento_date,
         )
         self.session.add(jogo_model)
         await self.session.commit()
@@ -37,12 +45,12 @@ class JogoRepository(IJogoRepository):
         if not jogo_model:
             return None
 
-        return JogoEntity.create(
+        return JogoEntity(
             id_jogo=jogo_model.id_jogo,
-            nome=NomeDoJogo.create(jogo_model.nome),
-            descricao=Descricao.create(jogo_model.descricao),
-            url=URL.create(jogo_model.url),
-            data_lancamento=DataLancamento.create(jogo_model.data_lancamento),
+            nome_do_jogo=NomeDoJogo(jogo_model.nome),
+            descricao=Descricao(jogo_model.descricao),
+            url=URL(jogo_model.url),
+            data_lancamento=DataLancamento(jogo_model.data_lancamento),
         )
 
     async def find_all(self) -> List[JogoEntity]:
@@ -50,12 +58,12 @@ class JogoRepository(IJogoRepository):
         jogos = result.scalars().all()
 
         return [
-            JogoEntity.create(
+            JogoEntity(
                 id_jogo=jogo.id_jogo,
-                nome=NomeDoJogo.create(jogo.nome),
-                descricao=Descricao.create(jogo.descricao),
-                url=URL.create(jogo.url),
-                data_lancamento=DataLancamento.create(jogo.data_lancamento),
+                nome_do_jogo=NomeDoJogo(jogo.nome),
+                descricao=Descricao(jogo.descricao),
+                url=URL(jogo.url),
+                data_lancamento=DataLancamento(jogo.data_lancamento),
             )
             for jogo in jogos
         ]
@@ -66,10 +74,16 @@ class JogoRepository(IJogoRepository):
         )
         jogo_model = result.scalar_one()
 
-        jogo_model.nome = jogo.nome.value
+        jogo_model.nome = jogo.nome_do_jogo.value
         jogo_model.descricao = jogo.descricao.value
         jogo_model.url = jogo.url.value
-        jogo_model.data_lancamento = jogo.data_lancamento.value
+        
+        # Convert ISO string to date object for SQLite
+        data_lancamento_value = jogo.data_lancamento.value
+        if isinstance(data_lancamento_value, str):
+            jogo_model.data_lancamento = datetime.fromisoformat(data_lancamento_value).date()
+        else:
+            jogo_model.data_lancamento = data_lancamento_value
 
         await self.session.commit()
 

@@ -13,5 +13,6 @@ def test_should_raise_error_for_empty_descricao():
 
 
 def test_should_raise_error_for_invalid_descricao():
+    # Test with very short description
     with pytest.raises(ValueError, match="Descrição invalida"):
-        Descricao("invalid description")
+        Descricao("short")

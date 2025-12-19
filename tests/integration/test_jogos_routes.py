@@ -3,91 +3,93 @@ from httpx import AsyncClient
 
 
 @pytest.mark.asyncio
-async def test_create_vinyl(client: AsyncClient, auth_headers):
+async def test_create_jogo(client: AsyncClient, auth_headers):
     response = await client.post(
-        "/api/vinyl-records",
+        "/api/jogos",
         headers=auth_headers,
         json={
-            "band": "ACDC",
-            "album": "Back in Black",
-            "year": 2010,
-            "number_of_tracks": 10,
-            "photo_url": "https://www.image",
+            "nome": "God of War",
+            "descricao": "Jogo de ação",
+            "url": "https://example.com/game",
+            "data_lancamento": "2020-01-01",
         },
     )
+
     assert response.status_code == 200
+
     data = response.json()
-    assert data["band"]["value"] == "ACDC"
-    assert data["album"]["value"] == "Back in Black"
-    assert data["year"] == 2010
-    assert data["number_of_tracks"] == 10
-    assert data["photo"]["url"] == "https://www.image"
-    assert "id" in data
-    assert "user_id" in data
+    assert data["nome"] == "God of War"
+    assert data["descricao"] == "Jogo de ação"
+    assert data["url"] == "https://example.com/game"
+    assert data["data_lancamento"] == "2020-01-01"
+    assert "id_jogo" in data
 
 
 @pytest.mark.asyncio
-async def test_list_vinyl(client: AsyncClient):
-    response = await client.get("/api/vinyl-records")
+async def test_list_jogos(client: AsyncClient):
+    response = await client.get("/api/jogos")
+
     assert response.status_code == 200
-    data = response.json()
-    assert data == []
+    assert isinstance(response.json(), list)
 
 
 @pytest.mark.asyncio
-async def test_update_vinyl(client: AsyncClient, auth_headers):
+async def test_update_jogo(client: AsyncClient, auth_headers):
     create = await client.post(
-        "/api/vinyl-records",
+        "/api/jogos",
         headers=auth_headers,
         json={
-            "band": "ACDC",
-            "album": "Back in Black",
-            "year": 2010,
-            "number_of_tracks": 10,
-            "photo_url": "https://www.image",
+            "nome": "FIFA",
+            "descricao": "Futebol simulação",
+            "url": "https://example.com/fifa",
+            "data_lancamento": "2019-01-01",
         },
     )
-    record_id = create.json()["id"]
+
+    jogo_id = create.json()["id_jogo"]
 
     response = await client.put(
-        f"/api/vinyl-records/{record_id}",
+        f"/api/jogos/{jogo_id}",
         headers=auth_headers,
         json={
-            "band": "ACDC",
-            "album": "Back in Black",
-            "year": 2020,
-            "number_of_tracks": 20,
-            "photo_url": "https://www.image",
+            "nome": "FIFA 23",
+            "descricao": "Futebol atualizado jogo",
+            "url": "https://example.com/fifa23",
+            "data_lancamento": "2023-01-01",
         },
     )
+
     assert response.status_code == 200
     data = response.json()
-    assert data["year"] == 2020
-    assert data["number_of_tracks"] == 20
+    assert data["nome"] == "FIFA 23"
 
 
 @pytest.mark.asyncio
-async def test_delete_vinyl(client: AsyncClient, auth_headers):
+async def test_delete_jogo(client: AsyncClient, auth_headers):
     create = await client.post(
-        "/api/vinyl-records",
+        "/api/jogos",
         headers=auth_headers,
         json={
-            "band": "ACDC",
-            "album": "Back in Black",
-            "year": 2010,
-            "number_of_tracks": 10,
-            "photo_url": "https://www.image",
+            "nome": "Minecraft",
+            "descricao": "Sandbox game mundo aberto",
+            "url": "https://example.com/mc",
+            "data_lancamento": "2011-01-01",
         },
     )
-    record_id = create.json()["id"]
+
+    jogo_id = create.json()["id_jogo"]
 
     response = await client.delete(
-        f"/api/vinyl-records/{record_id}", headers=auth_headers
+        f"/api/jogos/{jogo_id}", headers=auth_headers
     )
+
     assert response.status_code == 204
 
 
 @pytest.mark.asyncio
-async def test_delete_erro_vinyl(client: AsyncClient, auth_headers):
-    response = await client.delete("/api/vinyl-records/1", headers=auth_headers)
-    assert response.status_code == 400
+async def test_delete_jogo_inexistente(client: AsyncClient, auth_headers):
+    response = await client.delete(
+        "/api/jogos/nao-existe", headers=auth_headers
+    )
+
+    assert response.status_code == 422

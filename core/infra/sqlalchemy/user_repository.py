@@ -30,10 +30,10 @@ class UserRepository(IUserRepository):
         if not user_model:
             return None
 
-        return UserEntity.create(
+        return UserEntity(
             id=user_model.id,
-            email=Email.create(user_model.email),
-            password=Password.create(user_model.password),
+            email=Email(user_model.email),
+            password=Password(user_model.password),
         )
 
     async def find_by_id(self, id: str) -> Optional[UserEntity]:
@@ -45,10 +45,10 @@ class UserRepository(IUserRepository):
         if not user_model:
             return None
 
-        return UserEntity.create(
+        return UserEntity(
             id=user_model.id,
-            email=Email.create(user_model.email),
-            password=Password.create(user_model.password),
+            email=Email(user_model.email),
+            password=Password(user_model.password),
         )
 
     async def update(self, user: UserEntity) -> None:

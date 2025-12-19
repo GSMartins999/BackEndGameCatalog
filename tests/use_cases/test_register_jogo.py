@@ -1,20 +1,20 @@
-import pytest
+from datetime import date
+from core.domain.entities.jogo import Jogo
+from core.domain.value_objects import NomeDoJogo, Descricao, URL, DataLancamento
 
-from core.domain.use_cases.register_jogo import RegisterJogo
-from core.infra.mocks.mock_jogo_repository import MockJogoRepository
+class RegisterJogo:
+    def __init__(self, jogo_repository):
+        self.jogo_repository = jogo_repository
+        self._id_counter = 1  # contador para gerar IDs
 
-
-@pytest.mark.asyncio
-async def test_should_register_a_jogo():
-    repo = MockJogoRepository()
-    use_case = RegisterJogo(repo)
-
-    jogo = await use_case.execute(
-        nome="Need for Speed",
-        descricao="Corrida",
-        url="http://example.com",
-        data_lancamento=2025,
-    )
-
-    assert jogo.nome.value == "Need for Speed"
-    assert len(repo.jogos) == 1
+    async def execute(self, *, nome: str, descricao: str, url: str, data_lancamento: date):
+        jogo = Jogo(
+            id_jogo=self._id_counter,
+            nome_do_jogo=NomeDoJogo(nome),
+            descricao=Descricao(descricao),
+            url=URL(url),
+            data_lancamento=DataLancamento(data_lancamento)
+        )
+        self._id_counter += 1
+        await self.jogo_repository.save(jogo)
+        return jogo

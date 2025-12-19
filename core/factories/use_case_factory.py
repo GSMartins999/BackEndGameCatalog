@@ -13,6 +13,7 @@ from core.domain.use_cases import (
     RegisterUser,
     LoginUser,
     FindUserByEmail,
+    UpdateUser,
 )
 from core.infra.mocks import (
     MockJogoRepository,
@@ -33,6 +34,9 @@ class UseCaseFactory:
     def create_register_jogo(self) -> RegisterJogo:
         return RegisterJogo(jogo_repository=self.jogo_repository)
 
+    def create_list_jogos(self) -> ListJogos:
+        return ListJogos(jogo_repository=self.jogo_repository)
+
     def create_find_jogo(self) -> ListJogos:
         return ListJogos(jogo_repository=self.jogo_repository)
 
@@ -51,3 +55,9 @@ class UseCaseFactory:
 
     def create_find_user_by_email(self) -> FindUserByEmail:
         return FindUserByEmail(user_repository=self.user_repository)
+
+    def create_delete_user(self) -> DeleteUser:
+        return DeleteUser(user_repository=self.user_repository)
+
+    def create_update_user(self) -> UpdateUser:
+        return UpdateUser(user_repository=self.user_repository)

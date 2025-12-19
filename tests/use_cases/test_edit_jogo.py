@@ -1,9 +1,9 @@
 import pytest
+from datetime import date
 
 from core.domain.use_cases.register_jogo import RegisterJogo
 from core.domain.use_cases.edit_jogo import EditJogo
 from core.infra.mocks.mock_jogo_repository import MockJogoRepository
-
 
 @pytest.mark.asyncio
 async def test_should_update_jogo():
@@ -13,17 +13,17 @@ async def test_should_update_jogo():
 
     jogo = await register.execute(
         nome="FIFA",
-        descricao="Futebol",
-        url="http://example.com",
-        data_lancamento=2024,
+        descricao="Um jogo de futebol completo.",
+        url="https://example.com",
+        data_lancamento=date(2024, 1, 1),
     )
 
     updated = await update.execute(
-        jogo.id,
+        jogo.id_jogo,
         nome="FIFA 25"
     )
 
-    assert updated.nome.value == "FIFA 25"
+    assert updated.nome_do_jogo.value == "FIFA 25"
 
 
 @pytest.mark.asyncio

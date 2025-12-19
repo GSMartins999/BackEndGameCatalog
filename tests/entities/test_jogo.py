@@ -15,4 +15,4 @@ def test_should_create_a_valid_jogo():
     assert jogo.nome_do_jogo.value == "Need for Speed"
     assert jogo.descricao.value == "Jogo de corrida"
     assert jogo.url.value == "http://example.com/photo.jpg"
-    assert jogo.data_lancamento == 2025
+    assert jogo.data_lancamento.value == "2025-01-01"

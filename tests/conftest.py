@@ -72,12 +72,14 @@ async def client(db_session):
 @pytest_asyncio.fixture(scope="function")
 async def token(client):
     user_data = {
-        "name": "Test User",
         "email": "test@example.com",
         "password": "Password123!",
     }
     # Cria usuário
-    await client.post("/api/users", json=user_data)
+    await client.post(
+        "/api/users",
+        json={"email": user_data["email"], "password": user_data["password"]},
+    )
 
     # Faz login
     response = await client.post(

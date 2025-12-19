@@ -11,12 +11,11 @@ async def test_should_update_a_user():
     register_user = RegisterUser(user_repository)
     update_user = UpdateUser(user_repository)
 
-    user = await register_user.execute("Test User", "test@example.com", "ValidPass1!")
+    user = await register_user.execute(email="test@example.com", password="ValidPass1!", name="Test User")
     updated_user = await update_user.execute(
-        user.id, name="Updated Name", email="updated@example.com"
+        user.id, email="updated@example.com"
     )
 
-    assert updated_user.name.value == "Updated Name"
     assert updated_user.email.value == "updated@example.com"
 
 
@@ -26,4 +25,4 @@ async def test_should_not_update_a_non_existent_user():
     update_user = UpdateUser(user_repository)
 
     with pytest.raises(ValueError, match="User not found"):
-        await update_user.execute("non-existent-id", name="Updated Name")
+        await update_user.execute("non-existent-id", email="updated@example.com")

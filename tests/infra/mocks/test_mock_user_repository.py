@@ -1,13 +1,12 @@
 import pytest
 
 from core.domain.entities import User
-from core.domain.value_objects import Email, Name, Password
+from core.domain.value_objects import Email, Password
 from core.infra.mocks import MockUserRepository
 
 
 def create_user(
     id: str = None,
-    name: str = "Test User",
     email: str = "test@example.com",
     password: str = "ValidPass1!",
 ) -> User:
@@ -15,7 +14,6 @@ def create_user(
 
     return User(
         id=id or str(uuid.uuid4()),
-        name=Name(name),
         email=Email(email),
         password=Password(password),
     )
@@ -55,12 +53,14 @@ async def test_update_user():
     await repo.save(user)
 
     updated_user = User(
-        id=user.id, name=Name("Updated Name"), email=user.email, password=user.password
+        id=user.id,
+        email=user.email,
+        password=user.password,
     )
     await repo.update(updated_user)
 
     found_user = await repo.find_by_id(user.id)
-    assert found_user.name.value == "Updated Name"
+    assert found_user.email == user.email
     assert len(repo.users) == 1
 
 

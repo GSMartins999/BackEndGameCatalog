@@ -39,7 +39,7 @@ class JogoResponse(BaseModel):
 
         return {
             "id_jogo": v.id_jogo,
-            "nome": v.nome.value,
+            "nome": v.nome_do_jogo.value,
             "descricao": v.descricao.value,
             "url": v.url.value,
             "data_lancamento": v.data_lancamento.value,
@@ -49,7 +49,7 @@ class JogoResponse(BaseModel):
     def from_entity(cls, jogo):
         return cls(
             id_jogo=jogo.id_jogo,
-            nome=jogo.nome.value,
+            nome=jogo.nome_do_jogo.value,
             descricao=jogo.descricao.value,
             url=jogo.url.value,
             data_lancamento=jogo.data_lancamento.value,

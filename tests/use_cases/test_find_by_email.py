@@ -11,7 +11,7 @@ async def test_should_find_a_user_by_email():
     register_user = RegisterUser(user_repository)
     find_user_by_email = FindUserByEmail(user_repository)
 
-    await register_user.execute("Test User", "test@example.com", "ValidPass1!")
+    await register_user.execute(email="test@example.com", password="ValidPass1!", name="Test User")
     found_user = await find_user_by_email.execute("test@example.com")
 
     assert found_user is not None

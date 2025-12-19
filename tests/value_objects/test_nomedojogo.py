@@ -8,8 +8,9 @@ def test_should_create_a_valid_nomejogo():
 
 
 def test_should_raise_error_for_invalid_nomejogo():
+    # Test with very short name (less than 3 characters)
     with pytest.raises(ValueError, match="Nome Inválido"):
-        NomeDoJogo("Zulda")
+        NomeDoJogo("ZZ")
 
 
 def test_should_raise_error_for_empty_nomejogo():

@@ -1,14 +1,14 @@
 class Descricao:
     def __init__(self, value: str):
         if not value or not value.strip():
-            raise ValueError("A descrição é obrigatória.")
+            raise ValueError("Descrição não pode ser vazia")
 
         value = value.strip()
 
         if len(value) < 10:
-            raise ValueError("A descrição deve ter no mínimo 10 caracteres.")
+            raise ValueError("Descrição invalida")
 
         if len(value) > 500:
-            raise ValueError("A descrição deve ter no máximo 500 caracteres.")
+            raise ValueError("Descrição invalida")
 
         self.value = value

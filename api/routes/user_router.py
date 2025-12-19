@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from api.dependencies import get_use_case_factory
+from api.dependencies import get_use_case_factory, get_current_user
 from api.schemas.user_schemas import UserCreate, UserResponse
 from core.factories.use_case_factory import UseCaseFactory
 
@@ -22,6 +22,11 @@ async def create_user(
 
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@user_router.get("/me", response_model=UserResponse)
+async def get_me(current_user = Depends(get_current_user)):
+    return UserResponse.from_entity(current_user)
 
 
 @user_router.get("/users/by-email", response_model=UserResponse)

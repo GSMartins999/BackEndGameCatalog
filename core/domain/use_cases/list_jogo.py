@@ -8,5 +8,5 @@ class ListJogos:
     def __init__(self, jogo_repository: IJogoRepository):
         self.jogo_repository = jogo_repository
 
-    def execute(self) -> List[Jogo]:
-        return self.jogo_repository.find_all()
+    async def execute(self) -> List[Jogo]:
+        return await self.jogo_repository.find_all()

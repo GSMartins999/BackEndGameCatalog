@@ -5,10 +5,10 @@ class RemoveJogo:
     def __init__(self, jogo_repository: IJogoRepository):
         self.jogo_repository = jogo_repository
 
-    def execute(self, *, id_jogo: int) -> None:
-        jogo = self.jogo_repository.find_by_id(id_jogo)
+    async def execute(self, id_jogo: int) -> None:
+        jogo = await self.jogo_repository.find_by_id(id_jogo)
 
         if not jogo:
-            return
+            raise ValueError("Jogo not found")
 
-        self.jogo_repository.delete(id_jogo)
+        await self.jogo_repository.delete(id_jogo)

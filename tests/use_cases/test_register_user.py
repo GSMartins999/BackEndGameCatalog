@@ -9,9 +9,8 @@ async def test_should_register_a_new_user():
     user_repository = MockUserRepository()
     register_user = RegisterUser(user_repository)
 
-    user = await register_user.execute("Test User", "test@example.com", "ValidPass1!")
+    user = await register_user.execute(email="test@example.com", password="ValidPass1!", name="Test User")
 
-    assert user.name.value == "Test User"
     assert user.email.value == "test@example.com"
     assert len(user_repository.users) == 1
 
@@ -21,7 +20,7 @@ async def test_should_not_register_an_existing_user():
     user_repository = MockUserRepository()
     register_user = RegisterUser(user_repository)
 
-    await register_user.execute("Test User", "test@example.com", "ValidPass1!")
+    await register_user.execute(email="test@example.com", password="ValidPass1!", name="Test User")
 
     with pytest.raises(ValueError, match="User already exists"):
-        await register_user.execute("Another User", "test@example.com", "ValidPass1!")
+        await register_user.execute(email="test@example.com", password="ValidPass1!", name="Another User")

@@ -1,9 +1,9 @@
 import pytest
+from datetime import date
 
 from core.domain.use_cases.remove_jogo import RemoveJogo
 from core.domain.use_cases.register_jogo import RegisterJogo
 from core.infra.mocks.mock_jogo_repository import MockJogoRepository
-
 
 @pytest.mark.asyncio
 async def test_should_delete_a_jogo():
@@ -13,12 +13,12 @@ async def test_should_delete_a_jogo():
 
     jogo = await register.execute(
         nome="FIFA",
-        descricao="Futebol",
-        url="http://example.com",
-        data_lancamento=2024,
+        descricao="Um jogo de futebol completo.",
+        url="https://example.com",
+        data_lancamento=date(2024, 1, 1),
     )
 
-    await delete.execute(jogo.id)
+    await delete.execute(jogo.id_jogo)
 
     assert len(repo.jogos) == 0
 
